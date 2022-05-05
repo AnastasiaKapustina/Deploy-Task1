@@ -1,0 +1,1 @@
+GIT_INFO=$(git log -1 --format=%h) && BUILD_TIME=$(date +%s) && docker-compose build --build-arg GIT_INFO=$GIT_INFO --build-arg BUILD_TIME=$BUILD_TIME

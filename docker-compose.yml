@@ -1,0 +1,35 @@
+﻿version: '2'
+
+services:
+  app:
+    build:
+      context: ./Task1
+      dockerfile: Dockerfile
+    ports:
+    - "80:80"
+    - "443:443"
+    links:
+    - db
+    healthcheck:
+      test: curl -sS http://localhost/health || echo 1
+      interval: 5s
+      timeout: 10s
+      retries: 3
+    env_file:
+    - ./Task1/.env
+    depends_on:
+    - db
+  db:
+    image: postgres:latest
+    ports:
+    - "5423:5432"
+    volumes:
+    - pgdata:/var/lib/postgresql/data/pgdata
+    environment:
+    - POSTGRES_USER=task1
+    - POSTGRES_DB=task1
+    - POSTGRES_PASSWORD=task1_pwd
+    - PGDATA=/var/lib/postgresql/data/pgdata
+
+volumes:
+  pgdata:
